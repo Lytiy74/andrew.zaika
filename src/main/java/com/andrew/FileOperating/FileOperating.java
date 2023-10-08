@@ -5,11 +5,19 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class FileOperating {
-    public static String readFile(Path path) {
+    private Path path;
+    public FileOperating(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter file path: ");
+        this.path = Path.of(scanner.nextLine());
+    }
+    public FileOperating(Path path){
+        this.path = path;
+    }
+    public String readFile() {
         String line = "";
         try (FileReader in = new FileReader(path.toString() + ".txt");
              BufferedReader reader = new BufferedReader(in)) {
-
             while (reader.ready()) {
                 line = reader.readLine();
             }
@@ -21,19 +29,12 @@ public class FileOperating {
         }
     }
 
-    public static void writeFile(String line, Path path) {
-        try (FileWriter out = new FileWriter(path.toString());
+    public void writeFile(String line, String type) {
+        try (FileWriter out = new FileWriter(path.toString()+type);
              BufferedWriter writer = new BufferedWriter(out)) {
             writer.write(line);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private Path getPath() {
-        Scanner consoleScanner = new Scanner(System.in);
-        System.out.println("Write path to file: ");
-        String consoleInput = consoleScanner.nextLine();
-        return Path.of(consoleInput);
     }
 }
